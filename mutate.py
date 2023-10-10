@@ -51,7 +51,18 @@ class MyVisitor(ast.NodeTransformer):
         return ast.Str(value="SE", kind=None)
     def visit_Compare(self, node):
         return ast.Compare(left=node.left, ops=[ast.Lt()],comparators=[node.comparators[0]], kind=None)
-
+    def visit_BinOp(self, node):
+        if (type(node.op) == ast.Add):
+            new_op = ast.Sub()
+        elif (type(node.op) == ast.Sub):
+            new_op = ast.Add()
+        elif (type(node.op) == ast.Mult):
+            new_op = ast.Div()
+        else:
+            new_op = ast.Mult()
+        return ast.BinOp(left=node.left, op=new_op, right=node.right, kind=None)
+    def visit_Assign(self, node):
+        return ""
 # Instead of reading from a file, the starter code always processes in 
 # a small Python expression literally written in this string below:
 args = sys.argv
